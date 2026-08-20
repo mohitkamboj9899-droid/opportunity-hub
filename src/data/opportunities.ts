@@ -16,7 +16,7 @@ export interface Opportunity {
   applicationUrl: string;
 }
 
-export const SAMPLE_OPPORTUNITIES: Opportunity[] = [
+const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
   {
     id: 'opp-1',
     title: 'Software Engineering Intern',
@@ -557,6 +557,97 @@ export const SAMPLE_OPPORTUNITIES: Opportunity[] = [
     tags: ['Microsoft', 'Azure', 'Hackathon', 'Bangalore', 'Cloud'],
     applicationUrl: 'https://careers.microsoft.com'
   }
+];
+
+// Programmatic Generator to yield exactly 100 listings total
+const generateRemainingOpportunities = (): Opportunity[] => {
+  const list: Opportunity[] = [];
+  
+  const companies = [
+    'Salesforce', 'Intel', 'SpaceX', 'Flipkart', 'Swiggy', 'Meesho', 
+    'CRED', 'Groww', 'Cognizant', 'Infosys', 'TCS', 'Wipro', 'HCLTech',
+    'Twilio', 'Slack', 'GitHub', 'Atlassian', 'Discord', 'Datadog', 'Snowflake'
+  ];
+
+  const locations = [
+    'Bangalore, KA', 'Hyderabad, TS', 'Pune, MH', 'Mumbai, MH', 
+    'Noida, UP', 'Chennai, TN', 'Remote'
+  ];
+
+  const internshipTitles = [
+    { title: 'Backend Systems Developer Intern', skills: ['Go', 'Postgres', 'Redis', 'Python'], tags: ['Backend', 'Database'] },
+    { title: 'Frontend Systems UI Intern', skills: ['HTML', 'CSS', 'JavaScript', 'React'], tags: ['Frontend', 'UI/UX'] },
+    { title: 'Cloud Infrastructure Associate', skills: ['AWS', 'Docker', 'Kubernetes', 'Linux Kernel'], tags: ['Cloud', 'DevOps'] },
+    { title: 'Mobile App Developer Intern', skills: ['Swift', 'C++', 'Git', 'Algorithms'], tags: ['iOS', 'Mobile'] },
+    { title: 'Data Analytics Intern', skills: ['Python', 'SQL', 'Pandas', 'Data Analysis'], tags: ['Data', 'SQL'] },
+    { title: 'Security Systems Support Intern', skills: ['Linux Kernel', 'Python', 'Cyber Security', 'Git'], tags: ['Security', 'Infra'] }
+  ];
+
+  const researchTitles = [
+    { title: 'Natural Language Processing Assistant', skills: ['Python', 'PyTorch', 'Transformers', 'Deep Learning'], tags: ['Research', 'AI'] },
+    { title: 'Reinforcement Learning Research Fellow', skills: ['Python', 'PyTorch', 'Reinforcement Learning', 'Probability & Stats'], tags: ['Research', 'ML'] },
+    { title: 'Quantum Computing Algorithm Intern', skills: ['Python', 'Qiskit', 'Algorithms', 'Data Analysis'], tags: ['Research', 'Quantum'] },
+    { title: 'Distributed Networking Systems Intern', skills: ['C++', 'Go', 'Git', 'Linux Kernel'], tags: ['Research', 'Systems'] }
+  ];
+
+  const hackathonTitles = [
+    { title: 'Global Open Hackathon Sprint', skills: ['React', 'Node.js', 'APIs', 'Problem Solving'], tags: ['Hackathon', 'Build'] },
+    { title: 'DeFi protocol Scaling Hackday', skills: ['Solidity', 'Rust', 'Web3', 'Smart Contracts'], tags: ['Hackathon', 'Blockchain'] },
+    { title: 'Generative AI Solutions Sprint', skills: ['Python', 'React', 'APIs', 'Machine Learning'], tags: ['Hackathon', 'AI'] }
+  ];
+
+  for (let i = 37; i <= 100; i++) {
+    // Alternate remote status
+    const isRemote = i % 2 === 0;
+    const location = isRemote ? 'Remote' : locations[i % locations.length];
+
+    // Determine opportunity type
+    let type: 'Internship' | 'Hackathon' | 'Research' = 'Internship';
+    if (i % 3 === 0) type = 'Research';
+    else if (i % 3 === 1) type = 'Hackathon';
+
+    // Get specific titles/skills
+    let info: any;
+    if (type === 'Internship') {
+      info = internshipTitles[i % internshipTitles.length];
+    } else if (type === 'Research') {
+      info = researchTitles[i % researchTitles.length];
+    } else {
+      info = hackathonTitles[i % hackathonTitles.length];
+    }
+
+    const company = companies[i % companies.length];
+    const experienceLevels: Opportunity['experienceLevel'][] = ['Beginner', 'Some projects', 'Intermediate', 'Advanced'];
+    const expLevel = experienceLevels[i % experienceLevels.length];
+
+    // Generate deadline in future (Sept - Dec 2026)
+    const month = String(9 + (i % 4)).padStart(2, '0');
+    const day = String(1 + (i % 28)).padStart(2, '0');
+    const deadline = `2026-${month}-${day}`;
+
+    list.push({
+      id: `opp-${i}`,
+      title: info.title,
+      organization: company,
+      type,
+      location,
+      remote: isRemote,
+      deadline,
+      description: `Collaborate with engineers and product mentors at ${company} to design responsive architectures, research parallel computing models, and solve technical pipelines.`,
+      eligibility: `Open to all undergraduate students pursuing STEM degrees with experience in software engineering projects.`,
+      skills: info.skills,
+      experienceLevel: expLevel,
+      tags: [company, ...info.tags, isRemote ? 'Remote' : 'In-Person'],
+      applicationUrl: `https://careers.${company.toLowerCase()}.com`
+    });
+  }
+
+  return list;
+};
+
+export const SAMPLE_OPPORTUNITIES: Opportunity[] = [
+  ...MANUAL_SAMPLE_OPPORTUNITIES,
+  ...generateRemainingOpportunities()
 ];
 
 // Helper to map DB row object properties into strict Opportunity TS interface properties
