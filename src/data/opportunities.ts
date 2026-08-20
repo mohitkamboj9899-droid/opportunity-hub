@@ -16,6 +16,111 @@ export interface Opportunity {
   applicationUrl: string;
 }
 
+// Map organization names to their verified careers URL to prevent "domain invalid" errors
+const getCompanyCareersUrl = (company: string): string => {
+  const norm = company.toLowerCase().trim();
+  switch (norm) {
+    case 'google':
+    case 'google india':
+      return 'https://careers.google.com';
+    case 'microsoft':
+    case 'microsoft research':
+    case 'microsoft india':
+      return 'https://careers.microsoft.com';
+    case 'adobe':
+    case 'adobe india':
+      return 'https://careers.adobe.com';
+    case 'tesla':
+      return 'https://www.tesla.com/careers';
+    case 'openai':
+      return 'https://openai.com/careers';
+    case 'meta':
+    case 'meta india':
+      return 'https://metacareers.com';
+    case 'isro':
+      return 'https://www.isro.gov.in/careers.html';
+    case 'stripe':
+      return 'https://stripe.com/jobs';
+    case 'crowdstrike':
+      return 'https://www.crowdstrike.com/careers/';
+    case 'netflix':
+      return 'https://jobs.netflix.com/';
+    case 'solana':
+      return 'https://solana.com/careers';
+    case 'apple':
+    case 'apple india':
+      return 'https://www.apple.com/careers/in/';
+    case 'nvidia':
+      return 'https://www.nvidia.com/en-in/about-nvidia/careers/';
+    case 'vercel':
+      return 'https://vercel.com/careers';
+    case 'ibm':
+    case 'ibm research':
+      return 'https://www.ibm.com/careers';
+    case 'aws':
+    case 'aws india':
+      return 'https://www.amazon.jobs/';
+    case 'postman':
+      return 'https://www.postman.com/careers/';
+    case 'zerodha':
+      return 'https://zerodha.tech/';
+    case 'owasp':
+      return 'https://owasp.org/';
+    case 'cern':
+      return 'https://careers.cern/';
+    case 'government':
+    case 'ministry of education, india':
+      return 'https://sih.gov.in';
+    case 'devfolio':
+    case 'ethindia':
+      return 'https://ethindia.co';
+    case 'razorpay':
+      return 'https://razorpay.com/jobs/';
+    case 'salesforce':
+      return 'https://careers.salesforce.com/';
+    case 'intel':
+      return 'https://jobs.intel.com/';
+    case 'spacex':
+      return 'https://www.spacex.com/careers/';
+    case 'flipkart':
+      return 'https://www.flipkartcareers.com/';
+    case 'swiggy':
+      return 'https://careers.swiggy.com/';
+    case 'meesho':
+      return 'https://meesho.careers/';
+    case 'cred':
+      return 'https://cred.club/careers';
+    case 'groww':
+      return 'https://groww.in/careers';
+    case 'cognizant':
+      return 'https://careers.cognizant.com/';
+    case 'infosys':
+      return 'https://careers.infosys.com/';
+    case 'tcs':
+      return 'https://ibegin.tcs.com/iBegin/';
+    case 'wipro':
+      return 'https://careers.wipro.com/';
+    case 'hcltech':
+      return 'https://www.hcltech.com/careers';
+    case 'twilio':
+      return 'https://www.twilio.com/company/careers';
+    case 'slack':
+      return 'https://slack.com/careers';
+    case 'github':
+      return 'https://github.com/about/careers';
+    case 'atlassian':
+      return 'https://www.atlassian.com/company/careers';
+    case 'discord':
+      return 'https://discord.com/careers';
+    case 'datadog':
+      return 'https://careers.datadoghq.com/';
+    case 'snowflake':
+      return 'https://www.snowflake.com/careers/';
+    default:
+      return `https://www.google.com/search?q=${encodeURIComponent(company + ' careers')}`;
+  }
+};
+
 const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
   {
     id: 'opp-1',
@@ -45,7 +150,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Python', 'PyTorch', 'Computer Vision', 'Deep Learning'],
     experienceLevel: 'Advanced',
     tags: ['Microsoft', 'Research', 'AI', 'Bangalore', 'Computer Vision'],
-    applicationUrl: 'https://research.microsoft.com'
+    applicationUrl: 'https://careers.microsoft.com'
   },
   {
     id: 'opp-3',
@@ -135,7 +240,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Solidity', 'TypeScript', 'React', 'Ethers.js'],
     experienceLevel: 'Intermediate',
     tags: ['Polygon', 'Web3', 'Blockchain', 'Remote', 'React'],
-    applicationUrl: 'https://polygon.technology'
+    applicationUrl: 'https://polygon.technology/careers'
   },
   {
     id: 'opp-9',
@@ -150,7 +255,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['JavaScript', 'Node.js', 'Cyber Security', 'Penetration Testing'],
     experienceLevel: 'Some projects',
     tags: ['OWASP', 'Research', 'Security', 'Remote', 'JavaScript'],
-    applicationUrl: 'https://owasp.org'
+    applicationUrl: 'https://owasp.org/'
   },
   {
     id: 'opp-10',
@@ -180,7 +285,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['HTML', 'CSS', 'JavaScript', 'React', 'Tailwind'],
     experienceLevel: 'Some projects',
     tags: ['Razorpay', 'Frontend', 'React', 'Bangalore', 'Fintech'],
-    applicationUrl: 'https://razorpay.com'
+    applicationUrl: 'https://razorpay.com/jobs/'
   },
   {
     id: 'opp-12',
@@ -195,7 +300,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Python', 'C++', 'Data Analysis', 'HPC', 'Linux'],
     experienceLevel: 'Advanced',
     tags: ['CERN', 'Research', 'Global', 'Physics', 'HPC'],
-    applicationUrl: 'https://home.cern'
+    applicationUrl: 'https://careers.cern/'
   },
   {
     id: 'opp-13',
@@ -210,7 +315,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Python', 'Pandas', 'Data Analysis', 'PyTorch'],
     experienceLevel: 'Some projects',
     tags: ['Tesla', 'Data Science', 'AI', 'Remote', 'Autopilot'],
-    applicationUrl: 'https://careers.tesla.com'
+    applicationUrl: 'https://www.tesla.com/careers'
   },
   {
     id: 'opp-14',
@@ -270,7 +375,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Python', 'MATLAB', 'Image Processing', 'Data Analysis'],
     experienceLevel: 'Advanced',
     tags: ['ISRO', 'Research', 'Satellite', 'Ahmedabad', 'Remote Sensing'],
-    applicationUrl: 'https://isro.gov.in'
+    applicationUrl: 'https://www.isro.gov.in/careers.html'
   },
   {
     id: 'opp-18',
@@ -285,7 +390,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['React', 'Node.js', 'APIs', 'Problem Solving'],
     experienceLevel: 'Some projects',
     tags: ['Stripe', 'Hackathon', 'SaaS', 'Remote', 'Fintech'],
-    applicationUrl: 'https://stripe.com'
+    applicationUrl: 'https://stripe.com/jobs'
   },
   {
     id: 'opp-19',
@@ -300,7 +405,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Python', 'Linux Kernel', 'Cyber Security', 'Operating Systems'],
     experienceLevel: 'Intermediate',
     tags: ['CrowdStrike', 'Security', 'Linux', 'Pune'],
-    applicationUrl: 'https://crowdstrike.com/careers'
+    applicationUrl: 'https://www.crowdstrike.com/careers/'
   },
   {
     id: 'opp-20',
@@ -315,7 +420,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Java', 'React', 'Cloud Architecture', 'Presentation'],
     experienceLevel: 'Advanced',
     tags: ['Netflix', 'Hackathon', 'Streaming', 'Los Gatos'],
-    applicationUrl: 'https://netflix.com'
+    applicationUrl: 'https://jobs.netflix.com/'
   },
   {
     id: 'opp-21',
@@ -360,7 +465,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Go', 'Postgres', 'Redis', 'Python'],
     experienceLevel: 'Some projects',
     tags: ['Zerodha', 'Backend', 'Go', 'Bangalore', 'Fintech'],
-    applicationUrl: 'https://zerodha.tech'
+    applicationUrl: 'https://zerodha.tech/'
   },
   {
     id: 'opp-24',
@@ -420,7 +525,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Rust', 'Smart Contracts', 'Web3', 'Problem Solving'],
     experienceLevel: 'Intermediate',
     tags: ['Solana', 'Hackathon', 'Rust', 'Web3', 'Remote'],
-    applicationUrl: 'https://solana.com'
+    applicationUrl: 'https://solana.com/careers'
   },
   {
     id: 'opp-28',
@@ -435,7 +540,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Swift', 'C++', 'Data Structures', 'Algorithms'],
     experienceLevel: 'Intermediate',
     tags: ['Apple', 'Software Engineering', 'iOS', 'Hyderabad', 'Swift'],
-    applicationUrl: 'https://apple.com/careers/in'
+    applicationUrl: 'https://www.apple.com/careers/in/'
   },
   {
     id: 'opp-29',
@@ -450,7 +555,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['C++', 'CUDA', 'Python', 'Algorithms'],
     experienceLevel: 'Advanced',
     tags: ['NVIDIA', 'GPU', 'Systems Programming', 'CUDA', 'Bangalore'],
-    applicationUrl: 'https://nvidia.com/careers'
+    applicationUrl: 'https://www.nvidia.com/en-in/about-nvidia/careers/'
   },
   {
     id: 'opp-30',
@@ -480,7 +585,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['Python', 'Qiskit', 'Data Analysis', 'Algorithms'],
     experienceLevel: 'Advanced',
     tags: ['IBM', 'Research', 'Quantum', 'Yorktown Heights', 'Academic'],
-    applicationUrl: 'https://research.ibm.com'
+    applicationUrl: 'https://www.ibm.com/careers'
   },
   {
     id: 'opp-32',
@@ -540,7 +645,7 @@ const MANUAL_SAMPLE_OPPORTUNITIES: Opportunity[] = [
     skills: ['JavaScript', 'Node.js', 'React', 'APIs'],
     experienceLevel: 'Some projects',
     tags: ['Postman', 'Frontend', 'React', 'Bangalore', 'APIs'],
-    applicationUrl: 'https://postman.com/careers'
+    applicationUrl: 'https://www.postman.com/careers/'
   },
   {
     id: 'opp-36',
@@ -625,6 +730,9 @@ const generateRemainingOpportunities = (): Opportunity[] => {
     const day = String(1 + (i % 28)).padStart(2, '0');
     const deadline = `2026-${month}-${day}`;
 
+    // Get correct career portal URL for this company to prevent domain invalid errors
+    const applicationUrl = getCompanyCareersUrl(company);
+
     list.push({
       id: `opp-${i}`,
       title: info.title,
@@ -638,7 +746,7 @@ const generateRemainingOpportunities = (): Opportunity[] => {
       skills: info.skills,
       experienceLevel: expLevel,
       tags: [company, ...info.tags, isRemote ? 'Remote' : 'In-Person'],
-      applicationUrl: `https://careers.${company.toLowerCase()}.com`
+      applicationUrl
     });
   }
 
